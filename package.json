@@ -1,0 +1,46 @@
+{
+  "name": "react-recontext",
+  "version": "0.0.3",
+  "description": "A lightweight state management inspired by Flux, Redux, based on the lastest React Context API",
+  "main": "./lib/cjs/index.js",
+  "module": "./lib/esm/index.js",
+  "types": "./lib/esm/index.d.ts",
+  "scripts": {
+    "build": "npm run build:esm && npm run build:cjs",
+    "build:esm": "tsc",
+    "build:cjs": "tsc --module commonjs --outDir lib/cjs",
+    "test": "echo \"No test specified\""
+  },
+  "files": [
+    "/lib"
+  ],
+  "author": {
+    "name": "HomieLab",
+    "url": "https://homielab.com/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/homielab/react-recontext"
+  },
+  "homepage": "https://github.com/homielab/react-recontext#readme",
+  "license": "ISC",
+  "keywords": [
+    "react",
+    "reactjs",
+    "react-native",
+    "redux",
+    "context",
+    "react-context",
+    "state",
+    "lightweight",
+    "flux",
+    "state"
+  ],
+  "peerDependencies": {
+    "react": "*"
+  },
+  "devDependencies": {
+    "@types/react": "^17.0.38",
+    "typescript": "^4.5.4"
+  }
+}

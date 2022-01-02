@@ -1,0 +1,140 @@
+## react-recontext
+
+[![npm version](https://badge.fury.io/js/react-recontext.svg)](https://badge.fury.io/js/react-recontext) [![CircleCI](https://circleci.com/gh/homielab/react-recontext/tree/main.svg?style=svg)](https://circleci.com/gh/homielab/react-recontext/tree/main) [![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/homielab/react-recontext/graphs/contributors)
+
+A lightweight state management inspired by Flux, Redux, based on the latest React Context API.
+
+SUPER simple and easy to build react, react-native application and flux architecture.
+
+Following the Flux Architechture
+
+## Installation
+
+    npm install --save react-recontext
+
+_or_
+
+    yarn add react-recontext
+
+## Api
+
+_“Everything should be made as simple as possible, but no simpler.”_ - Einstein
+
+```js
+const { Provider, Context, dispatch } = createStore(
+  initialState,
+  actionsCreators,
+  enableLogger
+);
+```
+
+- **initialState**: vanilla or immutable js object, contains store default value.
+- **actionsCreators**: js object contains function to update store value
+- **enableLogger**: boolean flag to enable logging for debug
+- **`<Provider />`**: wrap the root Component. The root component usually is `<App />` Component
+- **`dispatch(actionType, params)`**: dispatch an event to update the Store value, from everywhere.
+  - **actionType**: a string corresponding to the action name in `actionsCreators`
+  - **params**: should be an object contains the changes you want to update in store
+
+## Example
+
+There are some examples you can play with:
+
+- Todo Example React Web: [![Edit react-recontext-todo](https://codesandbox.io/static/img/play-codesandbox.svg)](https://codesandbox.io/s/weathered-dew-dr4x6?fontsize=14&hidenavigation=1&theme=dark)
+- Todo Example React Native: [Todo App Example](https://snack.expo.io/minhtc/react-recontext-demo)
+- React Native Audiobook: [Audiobook React Native App](https://github.com/homielab/audiobookapp)
+- ...more is coming...
+
+## Usage
+
+Only **3 steps** to start with react-recontext
+
+1.  Create **store.js**
+
+```js
+import createContext from "react-recontext";
+
+export const { dispatch, Context, Provider } = createContext({
+  displayName: "AppContext",
+  initState: {
+    todos: [],
+  },
+  actions: {
+    TOGGLE_ITEM: (state, { todoId }) => ({
+      todos: state.todos.map((todo) =>
+        todo.id === todoId ? { ...todo, completed: !todo.completed } : todo
+      ),
+    }),
+  },
+});
+```
+
+2.  Wrap root component with Provider
+
+- react:
+
+```js
+import React from "react";
+import ReactDOM from "react-dom";
+import { Provider } from "./store";
+import App from "./App";
+
+ReactDOM.render(
+  <Provider>
+    <App />
+  </Provider>,
+  document.getElementById("root")
+);
+```
+
+- react-native + react-nativation
+
+```js
+import { createStackNavigator } from "react-navigation";
+import { Provider } from "./store";
+
+const AppNavigator = createStackNavigator(...)
+
+// wrap root component with <Provider /> that imported from recontext store
+const App = () => (
+    <Provider>
+        <AppNavigator />
+    </Provider>
+);
+```
+
+3. Get data from store inside component by using React.useContext, and dispatch an action from anywhere you want
+
+```js
+import React from "react";
+import Todo from "./Todo";
+import { Context, dispatch } from "./store";
+
+const TodoList = () => {
+  const { todos } = React.useContext(Context);
+
+  return (
+    <ul>
+      {todos.map((todo) => (
+        <Todo
+          key={todo.id}
+          todo={todo}
+          onClick={() => dispatch("TOGGLE_ITEM", { todoId: todo.id })}
+        />
+      ))}
+    </ul>
+  );
+};
+
+export default TodoList;
+```
+
+## Debugging
+
+Supporting debugging by print all the store changes, example:
+
+<center>
+
+![Logger Example](https://github.com/homielab/react-recontext/raw/main/screenshots/logger.gif "Logger Example")
+
+</center>
